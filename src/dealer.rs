@@ -19,13 +19,23 @@ impl Dealer {
         self.hand.value() < 17
     }
 
-    pub fn play_turn(&mut self, deck: &mut Shoe) {
+    pub fn play_turn(&mut self, shoe: &mut Shoe) {
+        println!("Dealer total: {}", self.hand.value());
         while self.should_hit() {
-            self.hand.add_card(deck.deal().unwrap(), false)
+            self.hand.add_card(shoe.deal(), false)
         }
+        println!("Dealer total: {}", self.hand.value());
     }
 
     pub fn get_up_card(&self) -> Option<Card> {
         self.hand.get_up_card()
+    }
+
+    pub fn hand_value(&self) -> u8 {
+        self.hand.value()
+    }
+
+    pub fn clear_hand(&mut self) {
+        self.hand = Hand::new();
     }
 }

@@ -24,7 +24,8 @@ const ALL_RANKS: [Rank; 13] = [
 
 pub struct Shoe {
     cards: Vec<Card>,
-    cut_card_idx: u32,
+    cut_card_idx: usize,
+    current_card_idx: usize,
 }
 
 impl Shoe {
@@ -39,22 +40,26 @@ impl Shoe {
             }
         }
 
-        let mut shoe = Shoe { cards, cut_card_idx: 270 };
+        let mut shoe = Shoe { cards, cut_card_idx: 270, current_card_idx: 0 };
         shoe.shuffle();
         shoe
     }
 
-    fn shuffle(&mut self) {
+    pub fn shuffle(&mut self) {
         let mut rng = rng();
-        self.cards.shuffle(&mut rng)
+        self.cards.shuffle(&mut rng);
+        self.current_card_idx = 0;
+        self.cut_card_idx = 270;
     }
 
     pub fn cut_card_seen(&self) -> bool {
-        self.cards.len() < 30
+        self.current_card_idx > self.cut_card_idx
     }
 
-    pub fn deal(&mut self) -> Option<Card> {
-        self.cards.pop()
+    pub fn deal(&mut self) -> Card {
+        let card: Card = self.cards[self.current_card_idx];
+        self.current_card_idx += 1;
+        card
     }
 
 }
