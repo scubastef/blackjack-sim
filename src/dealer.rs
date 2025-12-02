@@ -34,6 +34,10 @@ impl Dealer {
     pub fn hand_value(&self) -> u8 {
         self.hand.value()
     }
+    
+    pub fn is_busted(&self) -> bool {
+        self.hand.is_busted()
+    }
 
     pub fn clear_hand(&mut self) {
         self.hand = Hand::new();

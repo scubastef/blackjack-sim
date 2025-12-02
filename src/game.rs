@@ -42,7 +42,17 @@ impl Game {
     }
 
     pub fn settle_bets(&mut self) {
-        if (self.player.hand_value() > self.dealer.hand_value()) && !self.player.is_busted() {
+        let player_total: u8 = self.player.hand_value();
+        let dealer_total: u8 = self.dealer.hand_value();
+
+        let player_busted: bool = self.player.is_busted();
+        let dealer_busted: bool = self.dealer.is_busted();
+
+        let win_scenario1: bool = dealer_busted && !player_busted;
+        let win_scenario2: bool = player_total > dealer_total && !player_busted;
+
+
+        if win_scenario1 || win_scenario2 {
             self.player.win_bet();
         } else if self.player.hand_value() == self.dealer.hand_value() {
             self.player.push();

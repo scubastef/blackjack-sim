@@ -26,7 +26,7 @@ impl Player {
             println!("Dealer upcard value {}", dealer_up_card.get_value());
             println!("Player hand total {}", self.hand.value());
             println!("Taking a card");
-            
+
             self.receive_card((*deck).deal());
         }
         println!("Player hand total {}", self.hand.value());
@@ -36,6 +36,7 @@ impl Player {
         println!("Player bankroll: ${:.2}", self.bankroll);
         println!("Placing bet of ${}", amount);
         self.current_bet = amount;
+        self.bankroll -= amount as f64;
     }
 
     pub fn win_bet(&mut self) {
