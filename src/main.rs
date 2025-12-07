@@ -6,12 +6,13 @@ mod player;
 mod game;
 mod dealer;
 mod shoe;
+mod basic_strategy;
 
 
 fn main() {
     let num_decks: usize = 6;
     let bankroll: u32 = 1000;
-    let num_hands_to_play: u32 = 100;
+    let num_hands_to_play: u32 = 10;
 
     let mut game = Game::new(num_decks, bankroll);
 

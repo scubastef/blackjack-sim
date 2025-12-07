@@ -1,6 +1,8 @@
 use crate::card::Card;
 use crate::shoe::Shoe;
 use crate::hand::Hand;
+use crate::basic_strategy::Action;
+use crate::basic_strategy::get_action;
 
 pub struct Player {
     hand: Hand,
@@ -22,14 +24,25 @@ impl Player {
     }
     
     pub fn play_turn(&mut self, dealer_up_card: Card, deck: &mut Shoe) {
-        while self.hand.value() < 17 {
-            println!("Dealer upcard value {}", dealer_up_card.get_value());
-            println!("Player hand total {}", self.hand.value());
-            println!("Taking a card");
 
-            self.receive_card((*deck).deal());
+        loop {
+            let action: Action = get_action(&self.hand, &dealer_up_card);
+
+            match action {
+                Action::Stand => break,
+                Action::Hit => {
+                    self.receive_card(deck.deal());
+                    if self.is_busted() { break; }
+                }
+                Action::Double => {
+                    self.current_bet *= 2;
+                    self.bankroll -= self.current_bet as f64;
+                    self.receive_card(deck.deal());
+                    break;
+                }
+                Action::Split => {}
+            }
         }
-        println!("Player hand total {}", self.hand.value());
     }
 
     pub fn place_bet(&mut self, amount: u32) {
