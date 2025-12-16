@@ -1,3 +1,4 @@
+use log::debug;
 use crate::hand::Hand;
 use crate::card::Card;
 
@@ -122,13 +123,13 @@ pub fn get_action(hand: &Hand, dealer_up_card: &Card) -> Action {
 
     // Soft total strategy
     if is_hand_soft {
-        println!("Player tota ----l: {}", player_total);
+        debug!("Player tota ----l: {}", player_total);
         let idx = (player_total - 12) as usize; // 13–21
         return SOFT_TABLE[idx][dealer_index];
     }
 
     // Hard total strategy
-    println!("Player tota ----l: {}", player_total);
+    debug!("Player tota ----l: {}", player_total);
     let idx = (player_total - 4) as usize; // 5–21
     let action = HARD_TABLE[idx][dealer_index];
 

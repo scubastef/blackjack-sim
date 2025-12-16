@@ -1,3 +1,4 @@
+use log::debug;
 use crate::hand::Hand;
 use crate::card::Card;
 use crate::shoe::Shoe;
@@ -20,11 +21,11 @@ impl Dealer {
     }
 
     pub fn play_turn(&mut self, shoe: &mut Shoe) {
-        println!("Dealer total: {}", self.hand.value());
+        debug!("Dealer total: {}", self.hand.value());
         while self.should_hit() {
             self.hand.add_card(shoe.deal(), false)
         }
-        println!("Dealer total: {}", self.hand.value());
+        debug!("Dealer total: {}", self.hand.value());
     }
 
     pub fn get_up_card(&self) -> Option<Card> {

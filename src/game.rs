@@ -1,3 +1,4 @@
+use log::debug;
 use crate::dealer::Dealer;
 use crate::shoe::Shoe;
 use crate::player::Player;
@@ -29,13 +30,13 @@ impl Game {
     }
 
     pub fn play_player_turn(&mut self) {
-        println!("Player playing turn...");
+        debug!("Player playing turn...");
         self.player.play_turn(self.dealer.get_up_card().unwrap(), &mut self.shoe);
-        println!("Player finished playing turn",)
+        debug!("Player finished playing turn",)
     }
 
     pub fn play_dealer_turn(&mut self) {
-        println!("Dealer playing turn...");
+        debug!("Dealer playing turn...");
         if !self.player.is_busted() {
             self.dealer.play_turn(&mut self.shoe)
         }
@@ -66,7 +67,7 @@ impl Game {
         self.dealer.clear_hand();
 
         if self.shoe.cut_card_seen() {
-            println!("CUT CARD SEEN! Shuffling deck...");
+            debug!("CUT CARD SEEN! Shuffling deck...");
             self.shoe.shuffle()
         }
     }

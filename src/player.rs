@@ -3,6 +3,7 @@ use crate::shoe::Shoe;
 use crate::hand::Hand;
 use crate::basic_strategy::Action;
 use crate::basic_strategy::get_action;
+use log::debug;
 
 pub struct Player {
     hand: Hand,
@@ -46,10 +47,11 @@ impl Player {
     }
 
     pub fn place_bet(&mut self, amount: u32) {
-        println!("Player bankroll: ${:.2}", self.bankroll);
-        println!("Placing bet of ${}", amount);
+        debug!("Player bankroll: ${:.2}", self.bankroll);
+        debug!("Placing bet of ${}", amount);
         self.current_bet = amount;
         self.bankroll -= amount as f64;
+        debug!("Player bankroll: ${:.2}", self.bankroll);
     }
 
     pub fn win_bet(&mut self) {
@@ -58,19 +60,19 @@ impl Player {
         } else {
             self.bankroll += (2 * self.current_bet) as f64;
         }
-        println!("Player wins! Bankroll: ${:.2}", self.bankroll);
+        debug!("Player wins! Bankroll: ${:.2}", self.bankroll);
         self.current_bet = 0;
     }
 
     pub fn lose_bet(&mut self) {
         self.current_bet = 0;
-        println!("Player loses! Bankroll: ${:.2}", self.bankroll);
+        debug!("Player loses! Bankroll: ${:.2}", self.bankroll);
     }
 
     pub fn push(&mut self) {
         self.bankroll += self.current_bet as f64;
         self.current_bet = 0;
-        println!("Player pushes. Bankroll: ${:.2}", self.bankroll);
+        debug!("Player pushes. Bankroll: ${:.2}", self.bankroll);
     }
     
     pub fn is_busted(&self) -> bool {
