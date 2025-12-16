@@ -36,9 +36,11 @@ const PAIR_TABLE: [[Action; 10]; 10] = {
     ]
 };
 
-const SOFT_TABLE: [[Action; 10]; 9] = {
+const SOFT_TABLE: [[Action; 10]; 10] = {
     use Action::*;
     [
+        // Soft 12 (A+A) REMOVE LATER!!!
+        [Hit, Hit, Hit, Hit, Hit, Hit, Hit, Hit, Hit, Hit],
         // Soft 13 (A+2)
         [Hit, Hit, Hit, Double, Double, Hit, Hit, Hit, Hit, Hit],
         // Soft 14 (A+3)
@@ -60,9 +62,11 @@ const SOFT_TABLE: [[Action; 10]; 9] = {
     ]
 };
 
-pub const HARD_TABLE: [[Action; 10]; 17] = {
+pub const HARD_TABLE: [[Action; 10]; 18] = {
     use Action::*;
     [
+        // 4
+        [Hit; 10],
         // 5
         [Hit; 10],
         // 6
@@ -102,11 +106,11 @@ pub const HARD_TABLE: [[Action; 10]; 17] = {
 
 pub fn get_action(hand: &Hand, dealer_up_card: &Card) -> Action {
     use Action::*;
-    
+
     let player_total: u8 = hand.value();
-    let is_hand_soft: bool = false;
-    let is_hand_splitable: bool = false;
-    let is_hand_doubleable: bool = false;
+    let is_hand_soft: bool = hand.is_soft();
+    let is_hand_splitable: bool = false; // hand.is_splittable();
+    let is_hand_doubleable: bool = hand.is_doubleable();
 
     let dealer_index = (dealer_up_card.get_value() - 2) as usize;
 
@@ -118,12 +122,14 @@ pub fn get_action(hand: &Hand, dealer_up_card: &Card) -> Action {
 
     // Soft total strategy
     if is_hand_soft {
-        let idx = (player_total - 13) as usize; // 13–21
+        println!("Player tota ----l: {}", player_total);
+        let idx = (player_total - 12) as usize; // 13–21
         return SOFT_TABLE[idx][dealer_index];
     }
 
     // Hard total strategy
-    let idx = (player_total - 5) as usize; // 5–21
+    println!("Player tota ----l: {}", player_total);
+    let idx = (player_total - 4) as usize; // 5–21
     let action = HARD_TABLE[idx][dealer_index];
 
     if action == Double && !is_hand_doubleable { Hit } else { action }

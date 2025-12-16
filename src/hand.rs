@@ -34,6 +34,33 @@ impl Hand {
 
         value
     }
+    
+    pub fn is_soft(&self) -> bool {
+        let has_ace: bool = self.cards.iter().any(|card| card.rank == Rank::Ace);
+
+        if !has_ace { return false; }
+
+        // Calculate value with all aces as 1
+        let hard_value: u8 = self.cards.iter()
+            .map(|card| {
+                if card.rank == Rank::Ace {
+                    1
+                } else {
+                    card.get_value()
+                }
+            })
+            .sum();
+
+        // If we can add 10 (treating one ace as 11 instead of 1) without busting,
+        // then the hand is soft
+        hard_value + 10 <= 21
+    }
+    
+    pub fn is_splittable(&self) -> bool {
+        self.cards.len() == 2 && self.cards[0].get_value() == self.cards[1].get_value()
+    }
+    
+    pub fn is_doubleable(&self) -> bool { self.cards.len() == 2 }
 
     pub fn is_busted(&self) -> bool {
         self.value() > 21
